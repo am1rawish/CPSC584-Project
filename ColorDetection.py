@@ -74,7 +74,7 @@ def align_to_color(color):
 
 def main():
 
-    speed = 50
+    speed = 60
 
     Bala7a.do_step('stand', 40)
 
@@ -84,23 +84,23 @@ def main():
 
     sleep(1)
 
-    has_detected_color = False
+    init_color = detect_color()
+    print(f"Initial detected color: {init_color}")
+    Bala7a.do_action('turn left',1,speed)
     while True:
 
-        color = detect_color()
-
-        if color is None:
-            if has_detected_color:
-                print("Lost color, scanning again...")
-                Bala7a.do_action('turn left',1,speed)
-
+        Bala7a.do_action('turn left',1,speed)
+        color = Vilib.color_detect(init_color)
+        n = Vilib.detect_obj_parameter['color_n']
+        sleep(2)
+        print("n: ", n)
+        
+        if n < 1:                
             print("No color detected, scanning...")
-            Bala7a.do_action('turn left',1,speed)
+            continue
 
-        else: 
-            has_detected_color = True
+        else:
             print(f"Detected color: {color}")
-            
             aligned = align_to_color(color)
 
             if not aligned:
