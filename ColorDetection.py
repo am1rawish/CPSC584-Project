@@ -4,7 +4,7 @@ from picrawler import Picrawler
 
 Bala7a = Picrawler()
 
-colors =  ["green", "blue", "orange"]
+colors =  ["green", "blue", "orange", "yellow"]
 
 def detect_color():
 
@@ -23,6 +23,7 @@ def detect_color():
 def align_to_color(color):
 
     is_aligned = False
+    speeed = 60
 
     Vilib.color_detect(color)
 
@@ -43,20 +44,19 @@ def align_to_color(color):
         print("Color distance start:", w)
 
         if x < 250:
-            Bala7a.do_action('turn left angle',1,80)
+            Bala7a.do_action('turn left angle',1,60)
             print("Color position l:", x)
 
         if x > 400:
-            Bala7a.do_action('turn right angle',1,80)
+            Bala7a.do_action('turn right angle',1,60)
             print("Color position right:", x)
 
-        if w < 65:
-            Bala7a.do_action('turn left', 1, 80)
-            Bala7a.do_action('forward', 1, 80)
+        if w < 130:
+            Bala7a.do_action('forward', 1, 60)
             print("Color distance f:", w)
         
-        if w > 85:
-            Bala7a.do_action('backward', 1, 80)
+        if w > 300:
+            Bala7a.do_action('backward', 1, 60)
             print("Color distance b:", w)
 
         elif 200 <= x <= 400 and 65 <= w <= 85:
@@ -74,7 +74,7 @@ def align_to_color(color):
 
 def main():
 
-    speed = 80
+    speed = 50
 
     Bala7a.do_step('stand', 40)
 
@@ -84,15 +84,21 @@ def main():
 
     sleep(1)
 
+    has_detected_color = False
     while True:
 
         color = detect_color()
 
         if color is None:
+            if has_detected_color:
+                print("Lost color, scanning again...")
+                Bala7a.do_action('turn left',1,speed)
+
             print("No color detected, scanning...")
             Bala7a.do_action('turn left',1,speed)
 
         else: 
+            has_detected_color = True
             print(f"Detected color: {color}")
             
             aligned = align_to_color(color)
