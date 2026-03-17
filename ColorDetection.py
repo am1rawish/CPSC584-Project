@@ -23,34 +23,45 @@ def detect_color():
 def align_to_color(color):
 
     is_aligned = False
-    speeed = 60
+    speeed = 40
 
-    Vilib.color_detect(color)
-
+    
+    
     while True:
-
+        Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
         
 
         if count == 0:
             print("Lost color")
             is_aligned = False
-            return is_aligned
+            break
 
         x = Vilib.detect_obj_parameter.get('color_x')
         w = Vilib.detect_obj_parameter.get('color_w')
 
         print("Color position start:", x)
-        print("Color distance start:", w)
+        # print("Color distance start:", w)
 
         if x < 250:
-            Bala7a.do_action('turn left angle',1,60)
+            Bala7a.do_action('turn left angle',1,35)
             print("Color position l:", x)
+      
 
-        if x > 400:
-            Bala7a.do_action('turn right angle',1,60)
+        elif x > 400:
+            Bala7a.do_action('turn right angle',1,35)
             print("Color position right:", x)
 
+
+        else:
+            print("Final position:", x)
+            is_aligned = True
+            print("Aligned with color!")
+            Bala7a.do_step('sit', 40)
+            break
+
+    return is_aligned
+    """
         if w < 130:
             Bala7a.do_action('forward', 1, 60)
             print("Color distance f:", w)
@@ -58,18 +69,15 @@ def align_to_color(color):
         if w > 300:
             Bala7a.do_action('backward', 1, 60)
             print("Color distance b:", w)
-
+"""
+"""
         elif 200 <= x <= 400 and 65 <= w <= 85:
             print("Final distance:", w)
             print("Final position:", x)
             is_aligned = True
             print("Aligned with color!")
             return False
-
-        else:
-            return
-
-    return is_aligned
+"""
 
 
 def main():
