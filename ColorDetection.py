@@ -21,6 +21,8 @@ def detect_color():
     return None
 
 def align_to_color(color):
+    Vilib.color_detect(color)
+    sleep(0.5)
 
     is_aligned = False
     speeed = 40
@@ -28,30 +30,42 @@ def align_to_color(color):
     
     
     while True:
-        Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
         
 
         if count == 0:
             print("Lost color")
             is_aligned = False
-            break
+            return False
 
         x = Vilib.detect_obj_parameter.get('color_x')
-        w = Vilib.detect_obj_parameter.get('color_w')
+
+        if x is None:
+            print("No x value yet")
+            sleep(0.2)
+            continue
+
+        
+        #w = Vilib.detect_obj_parameter.get('color_w')
 
         print("Color position start:", x)
         # print("Color distance start:", w)
 
         if x < 250:
+            print("Too far left -> turning left a little")
             Bala7a.do_action('turn left angle',1,35)
-            print("Color position l:", x)
+            sleep(0.5)
+
+            new_x = Vilib.detect_obj_parameter.get('color_x')
+            print("Updated x after left turn:", new_x)
       
 
         elif x > 400:
+            print("Too far right -> turning right a little")
             Bala7a.do_action('turn right angle',1,35)
-            print("Color position right:", x)
-
+            sleep(0.5)
+            new_x = Vilib.detect_obj_parameter.get('color_x')
+            print("Updated x after right turn:", new_x)
 
         else:
             print("Final position:", x)
@@ -98,9 +112,10 @@ def main():
     while True:
 
         Bala7a.do_action('turn left',1,speed)
-        color = Vilib.color_detect(init_color)
-        n = Vilib.detect_obj_parameter['color_n']
+        Vilib.color_detect(init_color)
         sleep(2)
+        n = Vilib.detect_obj_parameter['color_n']
+        
         print("n: ", n)
         
         if n < 1:                
@@ -108,8 +123,8 @@ def main():
             continue
 
         else:
-            print(f"Detected color: {color}")
-            aligned = align_to_color(color)
+            print(f"Detected color: {init_color}")
+            aligned = align_to_color(init_color)
 
             if not aligned:
               print("Failed to align with color, scanning again...")
