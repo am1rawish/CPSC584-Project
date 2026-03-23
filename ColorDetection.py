@@ -87,27 +87,32 @@ def main():
     print(f"Initial detected color: {init_color}")
     Bala7a.do_action('turn left',1,speed)
     while True:
-
-        Bala7a.do_action('turn left',1,speed)
-        color = Vilib.color_detect(init_color)
-        n = Vilib.detect_obj_parameter['color_n']
-        sleep(2)
-        print("n: ", n)
-        
-        if n < 1:                
-            print("No color detected, scanning...")
-            continue
-
-        else:
-            print(f"Detected color: {color} (test w purple)")
-            aligned = align_to_color('purple')
-
-            if not aligned:
-              print("Failed to align with color, scanning again...")
+        try:
+            Bala7a.do_action('turn left',1,speed)
+            color = Vilib.color_detect(init_color)
+            n = Vilib.detect_obj_parameter['color_n']
+            sleep(2)
+            print("n: ", n)
+            
+            if n < 1:                
+                print("No color detected, scanning...")
+                continue
 
             else:
-                print("Successfully aligned with color!")
-                break
+                print(f"Detected color: {color} (test w purple)")
+                aligned = align_to_color('purple')
+
+                if not aligned:
+                print("Failed to align with color, scanning again...")
+
+                else:
+                    print("Successfully aligned with color!")
+                    break
+
+        except KeyboardInterrupt:
+            print("\nCtrl+C pressed...")
+        finally:
+            crawler.do_step('sit', 40)
 
 if __name__ == "__main__":
     main()
