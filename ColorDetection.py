@@ -103,7 +103,7 @@ def main():
                 aligned = align_to_color('purple')
 
                 if not aligned:
-                print("Failed to align with color, scanning again...")
+                    print("Failed to align with color, scanning again...")
 
                 else:
                     print("Successfully aligned with color!")
@@ -112,7 +112,7 @@ def main():
         except KeyboardInterrupt:
             print("\nCtrl+C pressed...")
         finally:
-            crawler.do_step('sit', 40)
+            Bala7a.do_step('sit', 40)
 
 if __name__ == "__main__":
     main()
