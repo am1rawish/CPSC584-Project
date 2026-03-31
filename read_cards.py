@@ -37,7 +37,7 @@ def react(detected_color):
         print("celebrating correct answer!")
         i = 0
 
-        while i <= 4:
+        while i <= 10:
             twist(speed=100)
             i += 1
 
@@ -46,11 +46,21 @@ def react(detected_color):
 
 
 def main():
+    Vilib.camera_start(vflip=False, hflip=False)
+    Vilib.display(local=True, web=True)
     while True:
+        print("entered loop")
         color = detect_color()
-        
-        if color:
+
+        if color is None:
+            continue
+        else:
+            print("found color:", color)
+            print("reacting...")
             react(color)
             break
 
         return color
+
+if __name__ == "__main__":
+    main()
