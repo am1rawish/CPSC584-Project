@@ -1,6 +1,7 @@
 from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
+from twist import twist
 
 # read cards in treasure/danger boxes
 # if card is blue --> answer is correct --> go to next area
@@ -34,6 +35,11 @@ def react(detected_color):
     elif detected_color == "blue":
         #movements here
         print("celebrating correct answer!")
+        i = 0
+
+        while i <= 4:
+            twist(speed=100)
+            i += 1
 
     else:
         print("No card detected")
