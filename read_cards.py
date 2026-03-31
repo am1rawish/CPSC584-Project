@@ -34,33 +34,34 @@ def react(detected_color):
 
     elif detected_color == "blue":
         #movements here
-        print("celebrating correct answer!")
         i = 0
-
         while i <= 10:
             twist(speed=100)
             i += 1
 
-    else:
-        print("No card detected")
+        # maybe add audio if speaker issue gets fixed
+       
 
 
 def main():
     Vilib.camera_start(vflip=False, hflip=False)
     Vilib.display(local=True, web=True)
-    while True:
-        print("entered loop")
-        color = detect_color()
 
-        if color is None:
-            continue
-        else:
-            print("found color:", color)
-            print("reacting...")
-            react(color)
-            break
+    try:
+        while True:
+            color = detect_color()
+
+            if color is None:
+                print("No card detected")
+                continue
+            else:
+                react(color)
+                break
 
         return color
+
+    except KeyboardInterrupt:
+        print("\nCtrl+C detected, exiting safely...")
 
 if __name__ == "__main__":
     main()
