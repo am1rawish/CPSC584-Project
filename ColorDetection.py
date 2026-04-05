@@ -4,7 +4,7 @@ from picrawler import Picrawler
 
 Bala7a = Picrawler()
 
-colors =  ["green", "blue", "orange", "yellow"]
+colors =  ["purple", "orange", "yellow"] # color of answer boxes
 
 def detect_color():
 
