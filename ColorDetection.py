@@ -49,20 +49,20 @@ def align_to_color(color):
         # print("Color distance start:", w)
 
         if x < 250:
-            Bala7a.move('turn left angle',1,35)
+            move('turn left angle',1,35)
             print("Color position l:", x)
       
 
         elif x > 400:
-            Bala7a.move('turn right angle',1,35)
+            move('turn right angle',1,35)
             print("Color position right:", x)
 
         elif w < 140:
-            Bala7a.move('forward', 1, 65)
+            move('forward', 1, 65)
             print("Color distance f:", w)
         
         elif w > 380:
-            Bala7a.move('backward', 1, 65)
+            move('backward', 1, 65)
             print("Color distance b:", w)
 
         else:
@@ -92,10 +92,10 @@ def main():
 
     init_color = detect_color()
     print(f"Initial detected color: {init_color}")
-    Bala7a.move('turn left',1,speed)
+    move('turn left',1,speed)
     while True:
         try:
-            Bala7a.move('turn left',1,speed)
+            move('turn left',1,speed)
             color = Vilib.color_detect(init_color)
             n = Vilib.detect_obj_parameter['color_n']
             sleep(2)
