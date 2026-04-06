@@ -4,7 +4,15 @@ from picrawler import Picrawler
 
 Bala7a = Picrawler()
 
+move_history = []
+
 colors =  ["purple", "orange", "yellow"] # color of answer boxes
+
+def move(action, duration, speed=40):
+    Bala7a.do_action(action, duration, speed)
+
+    # Store the action in the move history
+    move_history.append((action, duration, speed))
 
 def detect_color():
 
@@ -23,7 +31,6 @@ def detect_color():
 def align_to_color(color):
 
     is_aligned = False
-    speeed = 40
 
     while True:
         Vilib.color_detect(color)
@@ -42,20 +49,20 @@ def align_to_color(color):
         # print("Color distance start:", w)
 
         if x < 250:
-            Bala7a.do_action('turn left angle',1,35)
+            Bala7a.move('turn left angle',1,35)
             print("Color position l:", x)
       
 
         elif x > 400:
-            Bala7a.do_action('turn right angle',1,35)
+            Bala7a.move('turn right angle',1,35)
             print("Color position right:", x)
 
         elif w < 140:
-            Bala7a.do_action('forward', 1, 65)
+            Bala7a.move('forward', 1, 65)
             print("Color distance f:", w)
         
         elif w > 380:
-            Bala7a.do_action('backward', 1, 65)
+            Bala7a.move('backward', 1, 65)
             print("Color distance b:", w)
 
         else:
@@ -85,10 +92,10 @@ def main():
 
     init_color = detect_color()
     print(f"Initial detected color: {init_color}")
-    Bala7a.do_action('turn left',1,speed)
+    Bala7a.move('turn left',1,speed)
     while True:
         try:
-            Bala7a.do_action('turn left',1,speed)
+            Bala7a.move('turn left',1,speed)
             color = Vilib.color_detect(init_color)
             n = Vilib.detect_obj_parameter['color_n']
             sleep(2)
