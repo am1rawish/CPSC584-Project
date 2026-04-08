@@ -1,4 +1,5 @@
 from enum import Enum, auto
+import random
 import ColorDetection 
 import read_cards
 
@@ -49,7 +50,7 @@ def main():
 
         elif current_state == State.ANSWERING_QUESTION:
             # Simulate answering a question
-            print("You have 45 seconds to answer the question..."!)
+            print("You have 45 seconds to answer the question...")
             sleep(45)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
@@ -57,7 +58,7 @@ def main():
             init_color = ColorDetection.get_initial_color()
             if init_color is None:
                 random_color = random.choice(['purple', 'orange', 'yellow'])
-                 current_state = State.FIND_ANSWER_BOX
+                current_state = State.FIND_ANSWER_BOX
             
             else:
                 current_state = State.FIND_ANSWER_BOX
