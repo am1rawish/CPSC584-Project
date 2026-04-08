@@ -7,6 +7,8 @@ class State(Enum):
     QUADRANT_PLAY = auto()
     ANSWERING_QUESTION = auto()
     FIND_ANSWER_BOX = auto()
+    READ_ANSWER_BOX = auto()
+    RETURN_TO_QUESTION_BOX = auto()
     SWITCH_QUADRANT = auto()
     LOSE_GAME = auto()
     WIN_GAME = auto()
@@ -40,6 +42,7 @@ def main():
     current_state = State.START
 
     while True:
+
         if current_state == State.START:
             print("Welcome to the game! Starting in Sector 1.")
             current_state = State.QUADRANT_PLAY
@@ -49,11 +52,42 @@ def main():
             print("You have 45 seconds to answer the question..."!)
             sleep(45)  # Simulate time taken to answer the question
             # play music/ ticking sound 
+
             # if no answer is given, maybe we have robot randomly picks a box to move to ??
-            current_state = State.FIND_ANSWER_BOX
+            init_color = ColorDetection.get_initial_color()
+            if init_color is None:
+                random_color = random.choice(['purple', 'orange', 'yellow'])
+                 current_state = State.FIND_ANSWER_BOX
+            
+            else:
+                current_state = State.FIND_ANSWER_BOX
 
-           
-
-        elif current_state == State.FIND_ANSWER_BOX:
-             ColorDetection.main()
         
+        elif current_state == State.FIND_ANSWER_BOX:
+        
+            ## need to call align to color func here and pass in init_color
+             ColorDetection.main()
+             State.READ_ANSWER_BOX
+             
+
+        elif current_state == State.READ_ANSWER_BOX:
+        
+            is_answer_correct = read_cards.main()
+
+            if is_answer_correct:
+                print("Correct answer! Moving to next sector.")
+                current_state = State.SWITCH_QUADRANT
+            else:
+                print("Wrong answer! You lose a life.")
+                lives -= 1
+                if lives <= 0:
+                    current_state = State.LOSE_GAME
+                else:
+                    State.RETURN_TO_QUESTION_BOX
+
+    
+                    
+
+        
+if __name__ == "__main__":
+    main()

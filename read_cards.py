@@ -58,7 +58,7 @@ def main():
                 react(color)
                 break
 
-        return color
+        return True if color=="blue" else False
 
     except KeyboardInterrupt:
         print("\nCtrl+C detected, exiting safely...")

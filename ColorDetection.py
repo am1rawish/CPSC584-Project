@@ -80,6 +80,10 @@ def align_to_color(color):
     return is_aligned
 
 
+def get_initial_color():
+    #placeholder function to get initial color from game state
+    #figure out how to reconfigure this and main for gamestate to work together
+    filler_var = True
 
 def main():
 
