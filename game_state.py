@@ -1,7 +1,7 @@
 from enum import Enum, auto
-import random
 import ColorDetection 
 import read_cards
+from sleep import time
 
 class State(Enum):
     START = auto()
@@ -57,17 +57,23 @@ def main():
             # if no answer is given, maybe we have robot randomly picks a box to move to ??
             init_color = ColorDetection.get_initial_color()
             if init_color is None:
-                random_color = random.choice(['purple', 'orange', 'yellow'])
-                current_state = State.FIND_ANSWER_BOX
+                lives -= 1
+                #need life lost reaction here
+
+                if not any_lives_remaining():                            # check if we have any remaining lives
+                        current_state = State.LOSE_GAME                 # if it returns false(no more lives), lose game
+                
+                continue
             
+
             else:
                 current_state = State.FIND_ANSWER_BOX
 
         
         elif current_state == State.FIND_ANSWER_BOX:
         
-            ## need to call align to color func here and pass in init_color
-             ColorDetection.main()
+           
+             ColorDetection.find_color_box()
              State.READ_ANSWER_BOX
              
 
@@ -78,17 +84,39 @@ def main():
             if is_answer_correct:
                 print("Correct answer! Moving to next sector.")
                 current_state = State.SWITCH_QUADRANT
+
             else:
                 print("Wrong answer! You lose a life.")
                 lives -= 1
-                if lives <= 0:
+                if not any_lives_remaining():
                     current_state = State.LOSE_GAME
-                else:
-                    State.RETURN_TO_QUESTION_BOX
+                    continue
 
+                State.RETURN_TO_QUESTION_BOX
+
+        elif current_state == State.RETURN_TO_QUESTION_BOX:
+            print("Returning to question box...")
+            # add movement code here to return to question box
+            State.ANSWERING_QUESTION
+
+        elif current_state == State.SWITCH_QUADRANT:
+            filler_var = True
+
+        elif current_state == State.LOSE_GAME:
+            print("Game Over! You have lost all your lives.")
+            #add lsoe game reaction here
+            break
+
+        elif current_state == State.WIN_GAME:
+            print("Congratulations! You have won the game!")
+            #add win game reaction here
+            break
     
                     
-
+def any_lives_remaining():
+    if lives <= 0:
+        return False
+    return True
         
 if __name__ == "__main__":
     main()
