@@ -7,7 +7,7 @@ pygame.mixer.init()
 
 # load sounds you want to play on the LAPTOP
 SOUNDS = {
-    "hit": pygame.mixer.Sound("Kyoto.mp3"),
+    "hit": pygame.mixer.Sound("Kyoto.mp3")
 }
 
 class AudioHandler(socketserver.BaseRequestHandler):
