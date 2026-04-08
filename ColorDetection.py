@@ -81,34 +81,22 @@ def align_to_color(color):
 
 
 def get_initial_color():
-    #placeholder function to get initial color from game state
-    #figure out how to reconfigure this and main for gamestate to work together
-    filler_var = True
-
-def main():
-
-    speed = 60
-
-    Bala7a.do_step('stand', 40)
-
-    # Start camera and display
-    Vilib.camera_start(vflip=False, hflip=False)
-    Vilib.display(local=True, web=True)
-
-    
-
     init_color = detect_color()
     sleep(1)
+
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
         
     print(f"Initial detected color: {init_color}")
-    move('turn left',2,speed)
+    move('turn left',2,60)
+    return init_color
+
+def find_color_box(init_color, speed=60):
+
     while True:
         try:
             move('turn left',1,speed)
-            color = Vilib.color_detect(init_color)
           
             n = Vilib.detect_obj_parameter['color_n']
             
@@ -133,6 +121,22 @@ def main():
             print("\nCtrl+C pressed...")
         finally:
             Bala7a.do_step('sit', 40)
+
+
+def main():
+
+    speed = 60
+
+    Bala7a.do_step('stand', 40)
+
+    # Start camera and display
+    Vilib.camera_start(vflip=False, hflip=False)
+    Vilib.display(local=True, web=True)
+
+    
+
+    init_color = get_initial_color()
+    find_color_box(init_color, speed)
 
 if __name__ == "__main__":
     main()
