@@ -55,6 +55,7 @@ def main():
         if current_state == State.START:
             print("Welcome to the game! Starting in Sector 1.")
             preset_actions.wave_hand(Bala7a)
+            send_sound.play("game_intro")
             current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.ANSWERING_QUESTION:

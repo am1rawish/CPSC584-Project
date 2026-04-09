@@ -14,6 +14,7 @@ SOUNDS = {
     "gunshots": pygame.mixer.Sound("gunshots.mp3"),
     "lose life": pygame.mixer.Sound("lose_life.mp3"),
     "game_over": pygame.mixer.Sound("game_over.mp3"),
+    "game_intro": pygame.mixer.Sound("game_intro.mp3")
 
 }
 
