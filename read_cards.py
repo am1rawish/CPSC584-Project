@@ -3,12 +3,11 @@ from time import sleep
 from picrawler import Picrawler
 from twist import twist
 import preset_actions
+from game_state import Bala7a
 
 # read cards in treasure/danger boxes
 # if card is blue --> answer is correct --> go to next area
 # if card is red --> answer is wrong --> return back to question box
-
-Bala7a = Picrawler()
 
 def detect_color():
 

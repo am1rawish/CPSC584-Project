@@ -1,6 +1,7 @@
 from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
+from game_state import Bala7a
 
 Bala7a = Picrawler()
 

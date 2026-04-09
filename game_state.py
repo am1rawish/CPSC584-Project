@@ -1,9 +1,13 @@
+from picrawler import Picrawler
 from enum import Enum, auto
 import ColorDetection 
 import read_cards
-from sleep import time
-from ~/picrawler/examples import preset_actions.py
+from time import sleep
+import preset_actions
+import send_sound
+from vilib import Vilib
 
+Bala7a = Picrawler()
 class State(Enum):
     START = auto()
     QUADRANT_PLAY = auto()
@@ -45,24 +49,35 @@ def main():
 
     while True:
 
+        Vilib.camera_start(vflip=False, hflip=False)
+        Vilib.display(local=True, web=True)
+
         if current_state == State.START:
             print("Welcome to the game! Starting in Sector 1.")
-            preset_actions.wave_hand()
+            preset_actions.wave_hand(Bala7a)
             current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.ANSWERING_QUESTION:
             # Simulate answering a question
+            print("state: ANSWERING_QUESTION")
             print("You have 10 seconds to answer the question...")
+            send_sound.play("timer")
             sleep(10)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
             init_color = ColorDetection.get_initial_color()
+
             if init_color is None:
+                send_sound.play("lose life")
+                print("No answer detected! You lose a life.")
+                preset_actions.look_down(Bala7a)
+                send_sound.play("lose life")
                 lives -= 1
                 #need life lost reaction here
 
-                if not any_lives_remaining():                            # check if we have any remaining lives
-                        current_state = State.LOSE_GAME                 # if it returns false(no more lives), lose game
+                if not any_lives_remaining():                               # check if we have any remaining lives 
+                        send_sound.play("game_over")                 
+                        current_state = State.LOSE_GAME                     # if it returns false(no more lives), lose game
                 
                 continue
             
