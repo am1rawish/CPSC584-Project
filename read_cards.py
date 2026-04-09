@@ -3,7 +3,7 @@ from time import sleep
 from picrawler import Picrawler
 from twist import twist
 import preset_actions
-from game_state import Bala7a
+from robot_instance import Bala7a
 
 # read cards in treasure/danger boxes
 # if card is blue --> answer is correct --> go to next area
@@ -84,8 +84,6 @@ def main():
 
 
 def test():
-    Vilib.camera_start(vflip=False, hflip=False)
-    Vilib.display(local=True, web=True)
 
     detected_color = detect_color()
     react(detected_color)

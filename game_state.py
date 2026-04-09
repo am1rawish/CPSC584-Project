@@ -6,8 +6,9 @@ from time import sleep
 import preset_actions
 import send_sound
 from vilib import Vilib
+from robot_instance import Bala7a
 
-Bala7a = Picrawler()
+
 class State(Enum):
     START = auto()
     QUADRANT_PLAY = auto()
@@ -21,7 +22,6 @@ class State(Enum):
 
 
 current_sector = 1
-lives = 3
 map_pieces = []
 
 MAX_SECTORS = 3
@@ -46,11 +46,11 @@ SECTORS = {
 
 def main():
     current_state = State.START
+    Vilib.camera_start(vflip=False, hflip=False)
+    Vilib.display(local=True, web=True)
+    lives = 3
 
     while True:
-
-        Vilib.camera_start(vflip=False, hflip=False)
-        Vilib.display(local=True, web=True)
 
         if current_state == State.START:
             print("Welcome to the game! Starting in Sector 1.")
@@ -75,7 +75,7 @@ def main():
                 lives -= 1
                 #need life lost reaction here
 
-                if not any_lives_remaining():                               # check if we have any remaining lives 
+                if not any_lives_remaining(lives):                               # check if we have any remaining lives 
                         send_sound.play("game_over")                 
                         current_state = State.LOSE_GAME                     # if it returns false(no more lives), lose game
                 
@@ -87,14 +87,14 @@ def main():
 
         
         elif current_state == State.FIND_ANSWER_BOX:
-        
-           
-             ColorDetection.find_color_box()
-             State.READ_ANSWER_BOX
+
+             ColorDetection.find_color_box(init_color)
+             print("Found the answer box! Reading the card...")
+             current_state =State.READ_ANSWER_BOX
              
 
         elif current_state == State.READ_ANSWER_BOX:
-        
+            sleep(1)
             is_answer_correct = read_cards.detect_color()
 
             if is_answer_correct:
@@ -103,36 +103,43 @@ def main():
                 current_state = State.SWITCH_QUADRANT
 
             else:
+
                 print("Wrong answer! You lose a life.")
-                lives -= 1
-                read_cards.react(is_answer_correct)
                 
-                if not any_lives_remaining():
+                send_sound.play("lion")
+                read_cards.react(is_answer_correct)
+                lives -= 1
+                send_sound.play("lose life")
+
+                
+                if not any_lives_remaining(lives):
                     current_state = State.LOSE_GAME
                     continue
 
-                State.RETURN_TO_QUESTION_BOX
+                current_state = State.RETURN_TO_QUESTION_BOX
 
         elif current_state == State.RETURN_TO_QUESTION_BOX:
             print("Returning to question box...")
             # add movement code here to return to question box
-            State.ANSWERING_QUESTION
+            current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.SWITCH_QUADRANT:
             filler_var = True
 
         elif current_state == State.LOSE_GAME:
             print("Game Over! You have lost all your lives.")
+            send_sound.play("game_over")
             #add lsoe game reaction here
             break
 
         elif current_state == State.WIN_GAME:
             print("Congratulations! You have won the game!")
+            preset_actions.excited(Bala7a)
             #add win game reaction here
             break
     
                     
-def any_lives_remaining():
+def any_lives_remaining(lives):
     if lives <= 0:
         return False
     return True
