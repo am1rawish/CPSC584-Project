@@ -25,7 +25,7 @@ class AudioHandler(socketserver.BaseRequestHandler):
 
         if data in SOUNDS:
             sound = SOUNDS[data]
-            sound.play(maxtime=10000)   # milliseconds
+            sound.play(maxtime=40000)   # milliseconds
             self.request.sendall(b"OK")
         else:
             self.request.sendall(b"UNKNOWN_SOUND")
