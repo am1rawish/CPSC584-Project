@@ -53,7 +53,7 @@ def align_to_color(color):
             print("Color position l:", x)
             continue
       
-        elif w < 450:
+        elif w < 420:
             move('forward', 2, 60)
             print("Color distance f:", w)
             continue
@@ -82,13 +82,15 @@ def align_to_color(color):
 def get_initial_color():
     init_color = detect_color()
     sleep(1)
-
+    """
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
-        
+    """  
     print(f"Initial detected color: {init_color}")
-    move('turn left',2,60)
+
+    if init_color is not None:
+        move('turn left',2,60)
     return init_color
 
 def find_color_box(init_color, speed=60):

@@ -119,7 +119,10 @@ def main():
                 current_state = State.RETURN_TO_QUESTION_BOX
 
         elif current_state == State.RETURN_TO_QUESTION_BOX:
+            Bala7a.do_action('turn left angle', 2, 40)
             print("Returning to question box...")
+
+            ColorDetection.find_color_box(init_color)  # assuming purple is the color of the question box
             # add movement code here to return to question box
             current_state = State.ANSWERING_QUESTION
 
