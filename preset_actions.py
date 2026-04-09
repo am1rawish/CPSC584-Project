@@ -108,7 +108,7 @@ def fighting(spider):
         [[40, 50, -30], [40, 50, -30], [60, 20, -60], [60, 20, -60]],
     ]
 
-pounce_bite = [
+    pounce_bite = [
         [[40, 40, -60], [20, 60, 110], [60, 60, -60], [60, 60, -60]],
         [[40, 40, -40], [20, 30, -40], [60, 60, -60], [60, 60, -60]],
         [[20, 60, 110], [20, 30, -60], [60, 60, -60], [60, 60, -60]],
@@ -143,7 +143,7 @@ def excited(spider):
     coords = [
         # normal stand
 
-[[45, 45, -50], [45, 0, -50], [45, 0, -50], [45, 45, -50]],
+        [[45, 45, -50], [45, 0, -50], [45, 0, -50], [45, 45, -50]],
 
         # bounce up
         [[45, 45, -38], [45, 0, -38], [45, 0, -38], [45, 45, -38]],
@@ -204,7 +204,7 @@ def play_dead(spider):
     for coord in play_dead:
         spider.do_step(coord, 80)
 
-for coord in return_stand:
+    for coord in return_stand:
         spider.do_step(coord, 40)
 
 
@@ -236,7 +236,7 @@ def nod(spider):
         [[45, 45, -68], [45, 0, -48], [45, 5, -32], [45, 45, -38]],
     ]
 
-return_stand = [
+    return_stand = [
         [[45, 45, -62], [45, 0, -48], [45, 0, -40], [45, 45, -42]],
         [[45, 45, -55], [45, 0, -50], [45, 0, -45], [45, 45, -45]],
         [[45, 45, -50], [45, 0, -50], [45, 0, -50], [45, 45, -50]],
@@ -269,7 +269,7 @@ def shake_head(spider):
         [[45, 45, -50], [45, 0, -50], [45, 0, -50], [45, 45, -50]],
     ]
 
-twist_butt = [
+    twist_butt = [
         # twist butt
         [[55, 7, -50], [19, 48, -50], [77, 12, -50], [36, 63, -50]],
         [[19, 48, -50], [55, 7, -50], [36, 63, -50], [77, 12, -50]],
@@ -369,7 +369,7 @@ actions_dict = {
     "look_right": look_right,
     "look_up": look_up,
     "look_down": look_down,
-    "warm_up": warm_up,
+    #"warm_up": warm_up,
     "push_up": push_up,
 }
 
@@ -380,7 +380,7 @@ sounds_dict = {
 if __name__ == "__main__":
     from picrawler import Picrawler
 
-    my_spider = Picrawler()
+    Bala7a = Picrawler()
 
     actions = list(actions_dict.keys())
     for i, key in enumerate(actions_dict):
@@ -394,7 +394,7 @@ if __name__ == "__main__":
 
             if key == '':
                 print(actions[last_key])
-                actions_dict[actions[last_key]](my_spider)
+                actions_dict[actions[last_key]](Bala7a)
             else:
                 key = int(key)
                 if key > (len(actions) - 1):
@@ -402,28 +402,28 @@ if __name__ == "__main__":
                 else:
                     last_key = key
                     print(actions[key])
-                    actions_dict[actions[key]](my_spider)
+                    actions_dict[actions[key]](Bala7a)
 
-# sleep(2)
-            # wave_hand(my_spider)
-            # shake_hand(my_spider)
-            # fighting(my_spider)
-            # excited(my_spider)
-            # play_dead(my_spider)
-            # relax_legs(my_spider)
-            # nod(my_spider)
-            # shake_head(my_spider)
-            # look_left(my_spider)
-            # look_right(my_spider)
-            # look_up(my_spider)
-            # look_down(my_spider)
-            # warm_up(my_spider)
-            # push_up(my_spider)
+            # sleep(2)
+            # wave_hand(Bala7a)
+            # shake_hand(Bala7a)
+            # fighting(Bala7a)
+            # excited(Bala7a)
+            # play_dead(Bala7a)
+            # relax_legs(Bala7a)
+            # nod(Bala7a)
+            # shake_head(Bala7a)
+            # look_left(Bala7a)
+            # look_right(Bala7a)
+            # look_up(Bala7a)
+            # look_down(Bala7a)
+            # warm_up(Bala7a)
+            # push_up(Bala7a)
 
     except KeyboardInterrupt:
         pass
     except Exception as e:
         print(f'Error:\n {e}')
     finally:
-        my_spider.do_action("sit", speed=40)
+        Bala7a.do_action("sit", speed=40)
         sleep(.1)

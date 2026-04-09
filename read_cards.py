@@ -2,12 +2,6 @@ from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
 from twist import twist
-#import preset_actions
-import sys
-import os
-
-sys.path.append(os.path.expanduser("~/picrawler/examples"))
-
 import preset_actions
 
 # read cards in treasure/danger boxes
@@ -19,8 +13,9 @@ Bala7a = Picrawler()
 def detect_color():
 
     colors =  ["red", "blue"]
+    found = False
+    while found == False:
 
-    while True:
         for color in colors:
 
             Vilib.color_detect(color)
@@ -30,11 +25,15 @@ def detect_color():
 
             if count > 0:
                 if color == "red":
+                    print("entered red")
                     answer = False
+                    found = True
                     break
 
                 if color == "blue":
+                    print("entered blue")
                     answer = True
+                    found = True
                     break
             else:
                 print(f"No card detected, scanning again...")
@@ -46,9 +45,9 @@ def react(answer_value):
 
     if answer_value == False:
         print("reacting to wrong answer")
-        preset_actions.shake_head()
-        preset_action.look_up()
-        preset_actions.fighting()
+        preset_actions.shake_head(Bala7a)
+        preset_actions.look_up(Bala7a)
+        preset_actions.fighting(Bala7a)
         # sounds here
         #movements here
        
