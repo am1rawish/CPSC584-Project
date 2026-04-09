@@ -1,7 +1,7 @@
 from picrawler import Picrawler
 from time import sleep
 from vilib import Vilib
-from ColorDetection import move_history, Bala7a, detect_color
+from ColorDetection2 import move_history, Bala7a, detect_color
 
 def reverse_moves(action):
     if action == 'forward':
