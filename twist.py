@@ -1,7 +1,5 @@
 from picrawler import Picrawler
-from robot_hat import Music
 
-music = Music()
 crawler = Picrawler()
 
 
