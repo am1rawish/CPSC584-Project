@@ -90,14 +90,14 @@ def get_initial_color():
     print(f"Initial detected color: {init_color}")
 
     if init_color is not None:
-        move('turn left',2,60)
+        Bala7a.do_action('turn left angle',3,60)
     return init_color
 
 def find_color_box(init_color, speed=60):
 
     while True:
         try:
-            move('turn left',1,speed)
+            move('turn left angle',1,speed)
           
             n = Vilib.detect_obj_parameter['color_n']
             
