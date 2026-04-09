@@ -2,6 +2,7 @@ from enum import Enum, auto
 import ColorDetection 
 import read_cards
 from sleep import time
+from ~/picrawler/examples import preset_actions.py
 
 class State(Enum):
     START = auto()
@@ -46,15 +47,15 @@ def main():
 
         if current_state == State.START:
             print("Welcome to the game! Starting in Sector 1.")
-            current_state = State.QUADRANT_PLAY
+            preset_actions.wave_hand()
+            current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.ANSWERING_QUESTION:
             # Simulate answering a question
-            print("You have 45 seconds to answer the question...")
-            sleep(45)  # Simulate time taken to answer the question
+            print("You have 10 seconds to answer the question...")
+            sleep(10)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
-            # if no answer is given, maybe we have robot randomly picks a box to move to ??
             init_color = ColorDetection.get_initial_color()
             if init_color is None:
                 lives -= 1
@@ -79,15 +80,18 @@ def main():
 
         elif current_state == State.READ_ANSWER_BOX:
         
-            is_answer_correct = read_cards.main()
+            is_answer_correct = read_cards.detect_color()
 
             if is_answer_correct:
                 print("Correct answer! Moving to next sector.")
+                read_cards.react(is_answer_correct)
                 current_state = State.SWITCH_QUADRANT
 
             else:
                 print("Wrong answer! You lose a life.")
                 lives -= 1
+                read_cards.react(is_answer_correct)
+                
                 if not any_lives_remaining():
                     current_state = State.LOSE_GAME
                     continue
