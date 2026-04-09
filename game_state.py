@@ -68,12 +68,10 @@ def main():
             init_color = ColorDetection.get_initial_color()
 
             if init_color is None:
+                 print("No answer detected! You lose a life.")
                 send_sound.play("lose life")
-                print("No answer detected! You lose a life.")
                 preset_actions.look_down(Bala7a)
-                send_sound.play("lose life")
                 lives -= 1
-                #need life lost reaction here
 
                 if not any_lives_remaining(lives):                               # check if we have any remaining lives 
                         send_sound.play("game_over")                 
@@ -100,7 +98,7 @@ def main():
             if is_answer_correct:
                 print("Correct answer! Moving to next sector.")
                 read_cards.react(is_answer_correct)
-                current_state = State.SWITCH_QUADRANT
+                current_state = State.RETURN_TO_QUESTION_BOX
 
             else:
 
