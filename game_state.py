@@ -50,8 +50,8 @@ SECTORS = {
 }
 
 def main():
-    current_state = State.ANSWERING_QUESTION
-    current_sector = 3
+    current_state = State.START
+    current_sector = 1
 
     Vilib.camera_start(vflip=False, hflip=False)
     Vilib.display(local=True, web=True)
@@ -63,7 +63,7 @@ def main():
             print("Welcome to the game! Starting in Sector 1.")
             preset_actions.wave_hand(Bala7a)
             send_sound.play("game_intro")
-            sleep(10)
+            sleep(29)
 
             current_state = State.ANSWERING_QUESTION
 
@@ -71,10 +71,10 @@ def main():
             # Simulate answering a question
             print("state: ANSWERING_QUESTION")
             send_sound.play("have_1_min")
-            sleep(5)
+            sleep(2)
             print("You have 60 seconds to answer the question...")
             send_sound.play("timer")
-            sleep(10)  # Simulate time taken to answer the question
+            sleep(45)  # Simulate time taken to answer the question
             send_sound.play("10_s_left")
             sleep(10)
             # play music/ ticking sound 
