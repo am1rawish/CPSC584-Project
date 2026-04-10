@@ -123,6 +123,7 @@ def get_initial_color():
     print(f"Initial detected color: {init_color}")
 
     if init_color is not None:
+        Bala7a.do_action('backward', 1, 80)
         Bala7a.do_action('turn left angle',3,60)
     return init_color
 
@@ -162,8 +163,6 @@ def main():
     speed = 80
 
     Bala7a.do_step('stand', 40)
-
-    Bala7a.do_action('backward', 1, speed) 
 
     # Start camera and display
     Vilib.camera_start(vflip=False, hflip=False)

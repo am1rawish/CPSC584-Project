@@ -84,8 +84,6 @@ def return_to_white_box():
 
     Bala7a.do_step('stand', 1)
 
-    Bala7a.do_action('backward', 1, 80)
-
     init_color = detect_color()
 
     while init_color is None:
@@ -93,6 +91,7 @@ def return_to_white_box():
         init_color = detect_color()
 
     
+    Bala7a.do_action('backward', 1, 80)
     Bala7a.do_action('turn right angle', 2, 60)
     
 
