@@ -59,7 +59,6 @@ def align_to_color(color):
     is_aligned = False
     min_w1 = 430
     minw2 = 450
-    max_w = 630
     while True:
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
@@ -116,7 +115,7 @@ def align_to_color(color):
                 return is_aligned
             continue
 
-        elif w > max_w:
+        elif w > 600:
             move('backward', 1, 80)
             print("Color distance b:", w)
             continue
