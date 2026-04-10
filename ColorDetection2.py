@@ -27,7 +27,7 @@ def detect_color():
 
     return None
 
-def get_largest_object(color, samples=10):
+def get_largest_object(color, samples=3):
     best_area = 0
     best_x = None
     best_w = None
@@ -57,7 +57,9 @@ def get_largest_object(color, samples=10):
 def align_to_color(color):
 
     is_aligned = False
-
+    min_w1 = 430
+    minw2 = 450
+    max_w = 630
     while True:
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
@@ -67,11 +69,15 @@ def align_to_color(color):
             is_aligned = False
             break
 
-        if count > 1:
+        if count > 3:
             x, w, area = get_largest_object(color)
+            min_w1 = 410
+            min_w2 = 420
+
         else:
             x = Vilib.detect_obj_parameter.get('color_x')
             w = Vilib.detect_obj_parameter.get('color_w')
+            
 
         if x is None: 
             print("No valid object detected, scanning...")
@@ -85,22 +91,35 @@ def align_to_color(color):
             move('turn left angle',1,45)
             print("Color position l:", x)
             continue
-      
-        elif w < 440:
+
+        elif w < 310:
             move('forward', 2, 80)
             print("Color distance f:", w)
-            continue
-        
-        elif w < 460:
-            move('forward', 1, 80)
-            print("Color distance f(1):", w)
             continue
 
         elif x > 500:
             move('turn right angle',1,45)
             print("Color position right:", x)
             continue
+        
+        elif w < min_w1:
+            move('forward', 2, 80)
+            print("Color distance f:", w)
+            continue
 
+        elif w < minw2:
+            move('forward', 2, 60)
+            print("Color distance f:", w)
+
+            if color == 'purple':
+                is_aligned = True
+                return is_aligned
+            continue
+
+        elif w > max_w:
+            move('backward', 1, 80)
+            print("Color distance b:", w)
+            continue
         else:
             print("Final position:", x)
             print("Final distance:", w)
@@ -124,10 +143,10 @@ def get_initial_color():
 
     if init_color is not None:
         Bala7a.do_action('backward', 1, 80)
-        Bala7a.do_action('turn left angle',3,60)
+        Bala7a.do_action('turn left angle',3,70)
     return init_color
 
-def find_color_box(init_color, speed=60):
+def find_color_box(init_color, speed=70):
 
     while True:
         try:

@@ -21,8 +21,6 @@ class State(Enum):
     LOSE_GAME = auto()
     WIN_GAME = auto()
 
-
-current_sector = 1
 map_pieces = []
 
 MAX_SECTORS = 3
@@ -53,6 +51,8 @@ SECTORS = {
 
 def main():
     current_state = State.START
+    current_sector = 1
+
     Vilib.camera_start(vflip=False, hflip=False)
     Vilib.display(local=True, web=True)
     lives = 3
@@ -63,7 +63,7 @@ def main():
             print("Welcome to the game! Starting in Sector 1.")
             preset_actions.wave_hand(Bala7a)
             send_sound.play("game_intro")
-            sleep(30)
+            sleep(10)
 
             current_state = State.ANSWERING_QUESTION
 
@@ -72,7 +72,7 @@ def main():
             print("state: ANSWERING_QUESTION")
             print("You have 10 seconds to answer the question...")
             send_sound.play("timer")
-            sleep(45)  # Simulate time taken to answer the question
+            sleep(10)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
             init_color = ColorDetection2.get_initial_color()
@@ -81,10 +81,13 @@ def main():
                 print("No answer detected! You lose a life.")
                 send_sound.play("lose life")
                 preset_actions.look_down(Bala7a)
+                preset_actions.sit(Bala7a)
                 lives -= 1
+                sleep(2)
+                preset_actions.stand(Bala7a)
+               
 
-                if not any_lives_remaining(lives):                               # check if we have any remaining lives 
-                        send_sound.play("game_over")                 
+                if not any_lives_remaining(lives):                               # check if we have any remaining lives          
                         current_state = State.LOSE_GAME                     # if it returns false(no more lives), lose game
                 
                 continue
@@ -127,6 +130,11 @@ def main():
                 
                 lives -= 1
                 send_sound.play("lose life")
+                preset_actions.look_down(Bala7a)
+                preset_actions.sit(Bala7a)
+
+                sleep(2)
+                preset_actions.stand(Bala7a)
 
                 
                 if not any_lives_remaining(lives):
@@ -148,7 +156,7 @@ def main():
 
             '''insert sound indicating were moving on to the next question '''
 
-            sleep(30)
+            sleep(10)
 
             current_sector += 1
 
@@ -160,7 +168,7 @@ def main():
         elif current_state == State.LOSE_GAME:
             print("Game Over! You have lost all your lives.")
             send_sound.play("game_over")
-            #add lsoe game reaction here
+            #add lose game reaction here
             break
 
         elif current_state == State.WIN_GAME:

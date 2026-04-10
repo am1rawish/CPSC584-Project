@@ -61,10 +61,6 @@ def align_to_color_back(color):
             print("Color position right:", x)
             continue
 
-        # elif w > 550:
-        #     Bala7a.do_action('backward', 1, 60)
-        #     print("Color distance b:", w)
-
         else:
             print("Final position:", x)
             print("Final distance:", w)
@@ -92,7 +88,7 @@ def return_to_white_box():
 
     
     Bala7a.do_action('backward', 1, 80)
-    Bala7a.do_action('turn right angle', 2, 60)
+    Bala7a.do_action('turn right angle', 3, 70)
     
 
     # Reverse the move history and execute the opposite actions

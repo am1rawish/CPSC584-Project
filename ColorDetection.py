@@ -34,6 +34,9 @@ def align_to_color(color):
     while True:
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
+
+        
+            
         
 
         if count == 0:
@@ -56,16 +59,21 @@ def align_to_color(color):
         elif w < 420:
             move('forward', 2, 60)
             print("Color distance f:", w)
+
+             if color == 'purple':
+                is aligned = True
+                return is_aligned
             continue
         
-        elif w < 470:
-            move('forward', 1, 60)
-            print("Color distance f(1):", w)
-            continue
 
         elif x > 500:
             move('turn right angle',1,45)
             print("Color position right:", x)
+            continue
+
+        elif w < 470:
+            move('forward', 1, 60)
+            print("Color distance f(1):", w)
             continue
 
         else:
