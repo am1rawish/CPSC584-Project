@@ -40,16 +40,24 @@ def detect_color():
 
     return answer
 
-def react(answer_value):
+def react(answer_value, current_sector=1):
 
     if answer_value == False:
-        print("reacting to wrong answer")
-        preset_actions.shake_head(Bala7a)
-        preset_actions.look_up(Bala7a)
-        preset_actions.fighting(Bala7a)
-        # sounds here
-        #movements here
-       
+        if current_sector == 2:
+            print("reacting to wrong answer")
+            preset_actions.shake_head(Bala7a)
+            preset_actions.look_up(Bala7a)
+            preset_actions.play_dead(Bala7a)
+            # sounds here
+            #movements here
+        else:
+            print("reacting to wrong answer")
+            preset_actions.shake_head(Bala7a)
+            preset_actions.look_up(Bala7a)
+            preset_actions.fighting(Bala7a)
+            # sounds here
+            #movements here
+        
 
     elif answer_value == True:
         #movements here

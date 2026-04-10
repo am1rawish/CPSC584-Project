@@ -159,15 +159,15 @@ def find_color_box(init_color, speed=60):
 
 def main():
 
-    speed = 60
+    speed = 80
 
     Bala7a.do_step('stand', 40)
+
+    Bala7a.do_action('backward', 1, speed) 
 
     # Start camera and display
     Vilib.camera_start(vflip=False, hflip=False)
     Vilib.display(local=True, web=True)
-
-    
 
     init_color = get_initial_color()
     find_color_box(init_color, speed)

@@ -27,6 +27,12 @@ map_pieces = []
 
 MAX_SECTORS = 3
 
+ROUND_DANGERS = {
+    1: "lion",
+    2: "gunshots",
+    3: "crocodile"
+}
+
 SECTORS = {
     1: {
         "name": "Sector 1",
@@ -107,9 +113,18 @@ def main():
             else:
 
                 print("Wrong answer! You lose a life.")
+
+                if current_sector == 1:
+                    send_sound.play("lion")
+                    read_cards.react(is_answer_correct, current_sector)
+                elif current_sector == 2:
+                    send_sound.play("gunshots")
+                    read_cards.react(is_answer_correct, current_sector)
+                elif current_sector == 3:
+                    send_sound.play("crocodile")
+                    read_cards.react(is_answer_correct, current_sector)
                 
-                send_sound.play("lion")
-                read_cards.react(is_answer_correct)
+                
                 lives -= 1
                 send_sound.play("lose life")
 
