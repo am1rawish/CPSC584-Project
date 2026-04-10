@@ -41,22 +41,22 @@ def align_to_color_back(color):
         print("Color distance start:", w)
 
         if x < 250:
-            move('turn left angle',1,45)
+            Bala7a.do_action('turn left angle',1,45)
             print("Color position l:", x)
             continue
       
         elif w < 440:
-            move('forward', 2, 60)
+            Bala7a.do_action('forward', 2, 60)
             print("Color distance f:", w)
             continue
         
         elif w < 470:
-            move('forward', 1, 60)
+            Bala7a.do_action('forward', 1, 60)
             print("Color distance f(1):", w)
             continue
 
         elif x > 480:
-            move('turn right angle',1,45)
+            Bala7a.do_action('turn right angle',1,45)
             print("Color position right:", x)
             continue
 
@@ -76,7 +76,6 @@ def align_to_color_back(color):
 
 
 def return_to_white_box():
-    sleep(2)
 
     print("Move history:", move_history, "\n")
 
@@ -85,7 +84,7 @@ def return_to_white_box():
     Bala7a.do_step('stand', 1)
 
     init_color = detect_color()
-    sleep(1)
+
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
