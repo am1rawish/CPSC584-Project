@@ -1,7 +1,8 @@
 from picrawler import Picrawler
 from time import sleep
 from vilib import Vilib
-from ColorDetection2 import move_history, Bala7a, detect_color
+from ColorDetection2 import move_history, detect_color
+from robot_instance import Bala7a
 
 def reverse_moves(action):
     if action == 'forward':
@@ -45,13 +46,13 @@ def align_to_color_back(color):
             print("Color position l:", x)
             continue
       
-        elif w < 440:
-            Bala7a.do_action('forward', 2, 60)
+        elif w < 210:
+            Bala7a.do_action('forward', 2, 80)
             print("Color distance f:", w)
             continue
         
-        elif w < 470:
-            Bala7a.do_action('forward', 1, 60)
+        elif w < 420:
+            Bala7a.do_action('forward', 1, 80)
             print("Color distance f(1):", w)
             continue
 
@@ -60,9 +61,9 @@ def align_to_color_back(color):
             print("Color position right:", x)
             continue
 
-        elif w > 550:
-            Bala7a.do_action('backward', 1, 60)
-            print("Color distance b:", w)
+        # elif w > 550:
+        #     Bala7a.do_action('backward', 1, 60)
+        #     print("Color distance b:", w)
 
         else:
             print("Final position:", x)
@@ -104,7 +105,6 @@ def return_to_white_box():
         Bala7a.do_action(opposite_action, step, speed)
 
         Vilib.color_detect(init_color)
-        sleep(0.5)  
         
         n = Vilib.detect_obj_parameter.get('color_n', 0)
 

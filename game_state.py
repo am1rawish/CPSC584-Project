@@ -1,6 +1,7 @@
 from picrawler import Picrawler
 from enum import Enum, auto
-import ColorDetection 
+import ColorDetection2 
+import return_to_white_box
 import read_cards
 from time import sleep
 import preset_actions
@@ -56,7 +57,7 @@ def main():
             print("Welcome to the game! Starting in Sector 1.")
             preset_actions.wave_hand(Bala7a)
             send_sound.play("game_intro")
-            sleep(32)
+            sleep(30)
 
             current_state = State.ANSWERING_QUESTION
 
@@ -68,7 +69,7 @@ def main():
             sleep(45)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
-            init_color = ColorDetection.get_initial_color()
+            init_color = ColorDetection2.get_initial_color()
 
             if init_color is None:
                 print("No answer detected! You lose a life.")
@@ -89,7 +90,7 @@ def main():
         
         elif current_state == State.FIND_ANSWER_BOX:
 
-             ColorDetection.find_color_box(init_color)
+             ColorDetection2.find_color_box(init_color)
              print("Found the answer box! Reading the card...")
              current_state =State.READ_ANSWER_BOX
              
@@ -101,7 +102,7 @@ def main():
             if is_answer_correct:
                 print("Correct answer! Moving to next sector.")
                 read_cards.react(is_answer_correct)
-                current_state = State.RETURN_TO_QUESTION_BOX
+                current_state = State.SWITCH_QUADRANT
 
             else:
 
@@ -120,15 +121,26 @@ def main():
                 current_state = State.RETURN_TO_QUESTION_BOX
 
         elif current_state == State.RETURN_TO_QUESTION_BOX:
-            Bala7a.do_action('turn left angle', 2, 40)
-            print("Returning to question box...")
+            
+            return_to_white_box.return_to_white_box()
 
-            ColorDetection.find_color_box(init_color)  # assuming purple is the color of the question box
             # add movement code here to return to question box
             current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.SWITCH_QUADRANT:
-            filler_var = True
+            return_to_white_box.return_to_white_box()
+            Bala7a.do_step('sit', 40)
+
+            '''insert sound indicating were moving on to the next question '''
+
+            sleep(30)
+
+            current_sector += 1
+
+            if current_sector > MAX_SECTORS:
+                current_state = State.WIN_GAME
+            else:
+                current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.LOSE_GAME:
             print("Game Over! You have lost all your lives.")

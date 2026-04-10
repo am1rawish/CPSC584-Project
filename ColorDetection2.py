@@ -1,8 +1,7 @@
 from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
-
-Bala7a = Picrawler()
+from robot_instance import Bala7a
 
 move_history = []
 
@@ -28,6 +27,33 @@ def detect_color():
 
     return None
 
+def get_largest_object(color, samples=10):
+    best_area = 0
+    best_x = None
+    best_w = None
+
+    for _ in range(samples):
+        Vilib.color_detect(color)
+        sleep(0.5)
+
+        count = Vilib.detect_obj_parameter.get('color_n', 0)
+
+        if count > 0:
+            h = Vilib.detect_obj_parameter.get('color_h')
+            x = Vilib.detect_obj_parameter.get('color_x')
+            w = Vilib.detect_obj_parameter.get('color_w')
+
+            area = w * h
+
+            print("area", area)
+
+            if area > best_area:
+                best_area = area
+                best_x = x
+                best_w = w
+
+    return best_x, best_w, best_area
+
 def align_to_color(color):
 
     is_aligned = False
@@ -36,17 +62,23 @@ def align_to_color(color):
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
         
-
         if count == 0:
             print("Lost color")
             is_aligned = False
             break
-            
 
-        x = Vilib.detect_obj_parameter.get('color_x')
-        w = Vilib.detect_obj_parameter.get('color_w')
+        if count > 1:
+            x, w, area = get_largest_object(color)
+        else:
+            x = Vilib.detect_obj_parameter.get('color_x')
+            w = Vilib.detect_obj_parameter.get('color_w')
 
-        print("Color position start:", x)
+        if x is None: 
+            print("No valid object detected, scanning...")
+            is_aligned = False
+            break
+
+        print("Color position start:", x) 
         print("Color distance start:", w)
 
         if x < 200:
@@ -54,13 +86,13 @@ def align_to_color(color):
             print("Color position l:", x)
             continue
       
-        elif w < 450:
-            move('forward', 2, 60)
+        elif w < 440:
+            move('forward', 2, 80)
             print("Color distance f:", w)
             continue
         
-        elif w < 470:
-            move('forward', 1, 60)
+        elif w < 460:
+            move('forward', 1, 80)
             print("Color distance f(1):", w)
             continue
 
@@ -80,32 +112,25 @@ def align_to_color(color):
     return is_aligned
 
 
-
-def main():
-
-    speed = 60
-
-    Bala7a.do_step('stand', 40)
-
-    # Start camera and display
-    Vilib.camera_start(vflip=False, hflip=False)
-    Vilib.display(local=True, web=True)
-
-    
-
+def get_initial_color():
     init_color = detect_color()
     sleep(1)
+    """
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
-        
+    """  
     print(f"Initial detected color: {init_color}")
-    Bala7a.do_action('turn left angle',3,speed)
+
+    if init_color is not None:
+        Bala7a.do_action('turn left angle',3,60)
+    return init_color
+
+def find_color_box(init_color, speed=60):
 
     while True:
         try:
             move('turn left angle',1,speed)
-            color = Vilib.color_detect(init_color)
           
             n = Vilib.detect_obj_parameter['color_n']
             
@@ -130,6 +155,22 @@ def main():
             print("\nCtrl+C pressed...")
         finally:
             Bala7a.do_step('sit', 40)
+
+
+def main():
+
+    speed = 60
+
+    Bala7a.do_step('stand', 40)
+
+    # Start camera and display
+    Vilib.camera_start(vflip=False, hflip=False)
+    Vilib.display(local=True, web=True)
+
+    
+
+    init_color = get_initial_color()
+    find_color_box(init_color, speed)
 
 if __name__ == "__main__":
     main()
