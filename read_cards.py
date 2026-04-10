@@ -46,13 +46,11 @@ def react(answer_value, current_sector=1):
         if current_sector == 2:
             print("reacting to wrong answer")
             preset_actions.shake_head(Bala7a)
-            preset_actions.look_up(Bala7a)
             preset_actions.play_dead(Bala7a)
             # sounds here
             #movements here
         else:
             print("reacting to wrong answer")
-            preset_actions.shake_head(Bala7a)
             preset_actions.look_up(Bala7a)
             preset_actions.fighting(Bala7a)
             # sounds here

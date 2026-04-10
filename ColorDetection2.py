@@ -115,7 +115,7 @@ def align_to_color(color):
                 return is_aligned
             continue
 
-        elif w > 600:
+        elif w > 620:
             move('backward', 1, 80)
             print("Color distance b:", w)
             continue

@@ -50,8 +50,8 @@ SECTORS = {
 }
 
 def main():
-    current_state = State.START
-    current_sector = 1
+    current_state = State.ANSWERING_QUESTION
+    current_sector = 3
 
     Vilib.camera_start(vflip=False, hflip=False)
     Vilib.display(local=True, web=True)
@@ -63,7 +63,7 @@ def main():
             print("Welcome to the game! Starting in Sector 1.")
             preset_actions.wave_hand(Bala7a)
             send_sound.play("game_intro")
-            sleep(28)
+            sleep(10)
 
             current_state = State.ANSWERING_QUESTION
 
@@ -74,7 +74,7 @@ def main():
             sleep(5)
             print("You have 60 seconds to answer the question...")
             send_sound.play("timer")
-            sleep(35)  # Simulate time taken to answer the question
+            sleep(10)  # Simulate time taken to answer the question
             send_sound.play("10_s_left")
             sleep(10)
             # play music/ ticking sound 
@@ -123,12 +123,18 @@ def main():
             is_answer_correct = read_cards.detect_color()
 
             if is_answer_correct:
-                print("Correct answer! Moving to next sector.")
-                send_sound.play("correct_answer")
-                read_cards.react(is_answer_correct)
-                send_sound.play("next_sector")
-                sleep(2)
-                current_state = State.SWITCH_QUADRANT
+                if current_sector >= 3:
+                    send_sound.play("correct_answer")
+                    current_state = State.SWITCH_QUADRANT
+                    print("Correct answer! You won!")
+                
+                else:       
+                    print("Correct answer! Moving to next sector.")
+                    send_sound.play("correct_answer")
+                    read_cards.react(is_answer_correct)
+                    send_sound.play("next_sector")
+                    sleep(2)
+                    current_state = State.SWITCH_QUADRANT
 
             else:
 
@@ -143,10 +149,9 @@ def main():
                     read_cards.react(is_answer_correct, current_sector)
                     
                 elif current_sector == 3:
-                    send_sound.play("crocodile")
+                    send_sound.play("croc")
                     read_cards.react(is_answer_correct, current_sector)
                     
-                
                 
                 lives -= 1
                 send_sound.play("lose life")
