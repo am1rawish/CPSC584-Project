@@ -1,7 +1,7 @@
 from picrawler import Picrawler
 from time import sleep
 from vilib import Vilib
-from ColorDetection2 import move_history, detect_color
+from ColorDetection2 import move_history, detect_color, get_largest_object
 from robot_instance import Bala7a
 
 def reverse_moves(action):
@@ -23,7 +23,8 @@ def reverse_moves(action):
 def align_to_color_back(color):
 
     is_aligned = False
-
+    min_w1 = 210
+    min_w2 = 420
     while True:
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
@@ -33,10 +34,15 @@ def align_to_color_back(color):
             print("Lost color")
             is_aligned = False
             break
-            
 
-        x = Vilib.detect_obj_parameter.get('color_x')
-        w = Vilib.detect_obj_parameter.get('color_w')
+        elif count > 3:
+            x, w, area = get_largest_object(color)
+            min_w1 = 190
+            min_w2 = 400
+            
+        else:
+            x = Vilib.detect_obj_parameter.get('color_x')
+            w = Vilib.detect_obj_parameter.get('color_w')
 
         print("Color position start:", x)
         print("Color distance start:", w)
@@ -46,12 +52,12 @@ def align_to_color_back(color):
             print("Color position l:", x)
             continue
       
-        elif w < 210:
+        elif w < min_w1:
             Bala7a.do_action('forward', 2, 80)
             print("Color distance f:", w)
             continue
         
-        elif w < 420:
+        elif w < min_w2:
             Bala7a.do_action('forward', 1, 80)
             print("Color distance f(1):", w)
             continue
@@ -59,6 +65,11 @@ def align_to_color_back(color):
         elif x > 480:
             Bala7a.do_action('turn right angle',1,45)
             print("Color position right:", x)
+            continue
+
+        elif w > 580:
+            Bala7a.do_action('backward', 1, 80)
+            print("Color distance b:", w)
             continue
 
         else:
@@ -72,7 +83,7 @@ def align_to_color_back(color):
     return is_aligned
 
 
-def return_to_white_box():
+def return_to_white_box(init_color):
 
     print("Move history:", move_history, "\n")
 
@@ -80,19 +91,30 @@ def return_to_white_box():
 
     Bala7a.do_step('stand', 1)
 
-    init_color = detect_color()
-
+    """
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
-
+    """
     
     Bala7a.do_action('backward', 1, 80)
     Bala7a.do_action('turn right angle', 3, 70)
     
-
+    
     # Reverse the move history and execute the opposite actions
     for action, step, speed in move_history:  # Reverse the move history
+
+        Vilib.color_detect(init_color)
+        
+        n = Vilib.detect_obj_parameter.get('color_n', 0)
+
+        if n > 0:
+            print(f"Detected color during return: {init_color}")
+
+            if align_to_color_back(init_color):
+                print("Aligned with color during return!")
+                break    
+
         opposite_action = reverse_moves(action)
 
         if opposite_action is None:

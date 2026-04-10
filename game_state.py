@@ -50,7 +50,7 @@ SECTORS = {
 }
 
 def main():
-    current_state = State.START
+    current_state = State.ANSWERING_QUESTION
     current_sector = 1
 
     Vilib.camera_start(vflip=False, hflip=False)
@@ -75,7 +75,8 @@ def main():
             sleep(10)  # Simulate time taken to answer the question
             # play music/ ticking sound 
 
-            init_color = ColorDetection2.get_initial_color()
+            global init_color 
+            init_color= ColorDetection2.get_initial_color()
 
             if init_color is None:
                 print("No answer detected! You lose a life.")
@@ -105,7 +106,7 @@ def main():
              
 
         elif current_state == State.READ_ANSWER_BOX:
-            sleep(1)
+            sleep(8)
             is_answer_correct = read_cards.detect_color()
 
             if is_answer_correct:
@@ -120,12 +121,15 @@ def main():
                 if current_sector == 1:
                     send_sound.play("lion")
                     read_cards.react(is_answer_correct, current_sector)
+                    
                 elif current_sector == 2:
                     send_sound.play("gunshots")
                     read_cards.react(is_answer_correct, current_sector)
+                    
                 elif current_sector == 3:
                     send_sound.play("crocodile")
                     read_cards.react(is_answer_correct, current_sector)
+                    
                 
                 
                 lives -= 1
@@ -145,13 +149,12 @@ def main():
 
         elif current_state == State.RETURN_TO_QUESTION_BOX:
             
-            return_to_white_box.return_to_white_box()
+            return_to_white_box.return_to_white_box(init_color)
 
-            # add movement code here to return to question box
             current_state = State.ANSWERING_QUESTION
 
         elif current_state == State.SWITCH_QUADRANT:
-            return_to_white_box.return_to_white_box()
+            return_to_white_box.return_to_white_box(init_color)
             Bala7a.do_step('sit', 40)
 
             '''insert sound indicating were moving on to the next question '''
