@@ -42,7 +42,7 @@ class AudioHandler(socketserver.BaseRequestHandler):
             self.request.sendall(b"UNKNOWN_SOUND")
 
 if __name__ == "__main__":
-    host = "0.0.0.0"   # listen on your laptop's network interface
+    host = "172.17.10.234"   # listen on your laptop's network interface
     with socketserver.TCPServer((host, LAPTOP_PORT), AudioHandler) as server:
         print(f"Listening for sound requests on port {LAPTOP_PORT}...")
         server.serve_forever()
