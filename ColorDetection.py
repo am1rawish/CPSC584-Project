@@ -1,8 +1,7 @@
 from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
-
-Bala7a = Picrawler()
+from robot_instance import Bala7a
 
 move_history = []
 
@@ -35,6 +34,9 @@ def align_to_color(color):
     while True:
         Vilib.color_detect(color)
         count = Vilib.detect_obj_parameter.get('color_n',0)
+
+        
+            
         
 
         if count == 0:
@@ -54,19 +56,24 @@ def align_to_color(color):
             print("Color position l:", x)
             continue
       
-        elif w < 450:
+        elif w < 420:
             move('forward', 2, 60)
             print("Color distance f:", w)
+
+             if color == 'purple':
+                is aligned = True
+                return is_aligned
             continue
         
-        elif w < 470:
-            move('forward', 1, 60)
-            print("Color distance f(1):", w)
-            continue
 
         elif x > 500:
             move('turn right angle',1,45)
             print("Color position right:", x)
+            continue
+
+        elif w < 470:
+            move('forward', 1, 60)
+            print("Color distance f(1):", w)
             continue
 
         else:
@@ -80,31 +87,25 @@ def align_to_color(color):
     return is_aligned
 
 
-
-def main():
-
-    speed = 60
-
-    Bala7a.do_step('stand', 40)
-
-    # Start camera and display
-    Vilib.camera_start(vflip=False, hflip=False)
-    Vilib.display(local=True, web=True)
-
-    
-
+def get_initial_color():
     init_color = detect_color()
     sleep(1)
+    """
     while init_color is None:
         print("No color detected, looking")
         init_color = detect_color()
-        
+    """  
     print(f"Initial detected color: {init_color}")
-    move('turn left',2,speed)
+
+    if init_color is not None:
+        Bala7a.do_action('turn left angle',3,60)
+    return init_color
+
+def find_color_box(init_color, speed=60):
+
     while True:
         try:
-            move('turn left',1,speed)
-            color = Vilib.color_detect(init_color)
+            move('turn left angle',1,speed)
           
             n = Vilib.detect_obj_parameter['color_n']
             
@@ -129,6 +130,22 @@ def main():
             print("\nCtrl+C pressed...")
         finally:
             Bala7a.do_step('sit', 40)
+
+
+def main():
+
+    speed = 60
+
+    Bala7a.do_step('stand', 40)
+
+    # Start camera and display
+    Vilib.camera_start(vflip=False, hflip=False)
+    Vilib.display(local=True, web=True)
+
+    
+
+    init_color = get_initial_color()
+    find_color_box(init_color, speed)
 
 if __name__ == "__main__":
     main()

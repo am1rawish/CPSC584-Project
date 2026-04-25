@@ -7,7 +7,15 @@ pygame.mixer.init()
 
 # load sounds you want to play on the LAPTOP
 SOUNDS = {
-    "hit": pygame.mixer.Sound("Kyoto.mp3")
+    "hit": pygame.mixer.Sound("Kyoto.mp3"),
+    "timer": pygame.mixer.Sound("timer.mp3"),
+    "lion": pygame.mixer.Sound("lion.mp3"),
+    "croc": pygame.mixer.Sound("croc.mp3"),
+    "gunshots": pygame.mixer.Sound("gunshots.mp3"),
+    "lose life": pygame.mixer.Sound("lose_life.mp3"),
+    "game_over": pygame.mixer.Sound("game_over.mp3"),
+    "game_intro": pygame.mixer.Sound("game_intro.mp3")
+
 }
 
 class AudioHandler(socketserver.BaseRequestHandler):
@@ -16,7 +24,8 @@ class AudioHandler(socketserver.BaseRequestHandler):
         print(f"received: {data}")
 
         if data in SOUNDS:
-            SOUNDS[data].play()
+            sound = SOUNDS[data]
+            sound.play(maxtime=40000)   # milliseconds
             self.request.sendall(b"OK")
         else:
             self.request.sendall(b"UNKNOWN_SOUND")

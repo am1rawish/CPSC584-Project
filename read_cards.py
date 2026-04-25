@@ -2,37 +2,62 @@ from vilib import Vilib
 from time import sleep
 from picrawler import Picrawler
 from twist import twist
+import preset_actions
+from robot_instance import Bala7a
 
 # read cards in treasure/danger boxes
 # if card is blue --> answer is correct --> go to next area
 # if card is red --> answer is wrong --> return back to question box
 
-Bala7a = Picrawler()
-
 def detect_color():
 
     colors =  ["red", "blue"]
+    found = False
+    while found == False:
 
-    for color in colors:
+        for color in colors:
 
-        Vilib.color_detect(color)
-        sleep(2)
+            Vilib.color_detect(color)
+            sleep(3)
 
-        count = Vilib.detect_obj_parameter.get('color_n', 0)
+            count = Vilib.detect_obj_parameter.get('color_n', 0)
 
-        if count > 0:
-            return color
+            if count > 0:
+                if color == "red":
+                    print("entered red")
+                    answer = False
+                    found = True
+                    break
 
-    return None
+                if color == "blue":
+                    print("entered blue")
+                    answer = True
+                    found = True
+                    break
+            else:
+                print(f"No card detected, scanning again...")
+                continue 
 
-def react(detected_color):
+    return answer
 
-    if detected_color == "red":
-        print("reacting to wrong answer")
-        #movements here
-       
+def react(answer_value, current_sector=1):
 
-    elif detected_color == "blue":
+    if answer_value == False:
+        if current_sector == 2:
+            print("reacting to wrong answer")
+            preset_actions.shake_head(Bala7a)
+            preset_actions.play_dead(Bala7a)
+            # sounds here
+            #movements here
+        else:
+            print("reacting to wrong answer")
+            preset_actions.look_up(Bala7a)
+            preset_actions.fighting(Bala7a)
+            # sounds here
+            #movements here
+        
+
+    elif answer_value == True:
         #movements here
         i = 0
         while i <= 10:
@@ -52,16 +77,22 @@ def main():
             color = detect_color()
 
             if color is None:
-                print("No card detected")
+                print("No card detected, scanning")
                 continue
             else:
                 react(color)
                 break
 
-        return color
+        return True if color=="blue" else False
 
     except KeyboardInterrupt:
         print("\nCtrl+C detected, exiting safely...")
 
+
+def test():
+
+    detected_color = detect_color()
+    react(detected_color)
+
 if __name__ == "__main__":
-    main()
+    test()

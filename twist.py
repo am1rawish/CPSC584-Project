@@ -1,8 +1,5 @@
 from picrawler import Picrawler
-from robot_hat import Music
-
-music = Music()
-crawler = Picrawler()
+from robot_instance import Bala7a
 
 
 def twist(speed):
@@ -17,7 +14,7 @@ def twist(speed):
             new_step[(i+1)%4] = rise
             new_step[(i-1)%4] = drop
             # print(new_step)
-            crawler.do_step(new_step,speed)
+            Bala7a.do_step(new_step,speed)
 
 
 def main():  
